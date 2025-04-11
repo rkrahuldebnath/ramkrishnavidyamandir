@@ -1,3 +1,17 @@
+// Import Firebase v9 modular SDK
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from 'firebase/firestore';
+
+// Initialize Firebase app
+const firebaseConfig = {
+  apiKey: '<API_KEY>',
+  authDomain: '<AUTH_DOMAIN>',
+  projectId: '<PROJECT_ID>',
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 // Admin Authentication
 document.addEventListener('DOMContentLoaded', () => {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -91,48 +105,58 @@ function loadDashboardData() {
 
 // Notice Management
 function loadNotices() {
-    const notices = JSON.parse(localStorage.getItem('notices')) || [];
-    const noticeList = document.getElementById('noticeList');
-    if (!noticeList) return;
+    get(noticesRef).then(snapshot => {
+        const notices = snapshot.val() || [];
+        const noticeList = document.getElementById('noticeList');
+        if (!noticeList) return;
 
-    noticeList.innerHTML = notices.map((notice, index) => `
-        <li>
-            ${notice}
-            <button onclick="deleteNotice(${index})" class="btn">Delete</button>
-        </li>
-    `).join('');
+        noticeList.innerHTML = notices.map((notice, index) => `
+            <li>
+                ${notice}
+                <button onclick="deleteNotice(${index})" class="btn">Delete</button>
+            </li>
+        `).join('');
+    });
 }
 
 function addNotice() {
     const noticeText = document.getElementById('newNotice').value;
     if (!noticeText) return;
 
-    const notices = JSON.parse(localStorage.getItem('notices')) || [];
-    notices.unshift(noticeText);
-    localStorage.setItem('notices', JSON.stringify(notices));
-    document.getElementById('newNotice').value = '';
-    loadNotices();
+    get(noticesRef).then(snapshot => {
+        const notices = snapshot.val() || [];
+        notices.unshift(noticeText);
+        set(noticesRef, notices).then(() => {
+            document.getElementById('newNotice').value = '';
+            loadNotices();
+        });
+    });
 }
 
 function deleteNotice(index) {
-    const notices = JSON.parse(localStorage.getItem('notices')) || [];
-    notices.splice(index, 1);
-    localStorage.setItem('notices', JSON.stringify(notices));
-    loadNotices();
+    get(noticesRef).then(snapshot => {
+        const notices = snapshot.val() || [];
+        notices.splice(index, 1);
+        set(noticesRef, notices).then(() => {
+            loadNotices();
+        });
+    });
 }
 
 // Student Management
 function loadStudents() {
-    const students = JSON.parse(localStorage.getItem('students')) || [];
-    const studentList = document.getElementById('studentList');
-    if (!studentList) return;
+    get(studentsRef).then(snapshot => {
+        const students = snapshot.val() || [];
+        const studentList = document.getElementById('studentList');
+        if (!studentList) return;
 
-    studentList.innerHTML = students.map((student, index) => `
-        <li>
-            Code: ${student.code} | Name: ${student.name} | DOB: ${student.dob}
-            <button onclick="deleteStudent(${index})" class="btn">Delete</button>
-        </li>
-    `).join('');
+        studentList.innerHTML = students.map((student, index) => `
+            <li>
+                Code: ${student.code} | Name: ${student.name} | DOB: ${student.dob}
+                <button onclick="deleteStudent(${index})" class="btn">Delete</button>
+            </li>
+        `).join('');
+    });
 }
 
 function addStudent() {
@@ -149,37 +173,43 @@ function addStudent() {
 
     if (!student.code || !student.name) return;
 
-    const students = JSON.parse(localStorage.getItem('students')) || [];
-    students.push(student);
-    localStorage.setItem('students', JSON.stringify(students));
-    
-    // Clear form
-    document.querySelectorAll('#studentsTab input').forEach(input => {
-        input.value = '';
+    get(studentsRef).then(snapshot => {
+        const students = snapshot.val() || [];
+        students.push(student);
+        set(studentsRef, students).then(() => {
+            // Clear form
+            document.querySelectorAll('#studentsTab input').forEach(input => {
+                input.value = '';
+            });
+            loadStudents();
+        });
     });
-    
-    loadStudents();
 }
 
 function deleteStudent(index) {
-    const students = JSON.parse(localStorage.getItem('students')) || [];
-    students.splice(index, 1);
-    localStorage.setItem('students', JSON.stringify(students));
-    loadStudents();
+    get(studentsRef).then(snapshot => {
+        const students = snapshot.val() || [];
+        students.splice(index, 1);
+        set(studentsRef, students).then(() => {
+            loadStudents();
+        });
+    });
 }
 
 // Gallery Management
 function loadGallery() {
-    const gallery = JSON.parse(localStorage.getItem('galleryItems')) || [];
-    const galleryList = document.getElementById('galleryList');
-    if (!galleryList) return;
+    get(galleryRef).then(snapshot => {
+        const gallery = snapshot.val() || [];
+        const galleryList = document.getElementById('galleryList');
+        if (!galleryList) return;
 
-    galleryList.innerHTML = gallery.map((item, index) => `
-        <li>
-            ${item.title} (${item.type})
-            <button onclick="deleteGalleryItem(${index})" class="btn">Delete</button>
-        </li>
-    `).join('');
+        galleryList.innerHTML = gallery.map((item, index) => `
+            <li>
+                ${item.title} (${item.type})
+                <button onclick="deleteGalleryItem(${index})" class="btn">Delete</button>
+            </li>
+        `).join('');
+    });
 }
 
 function addGalleryItem() {
@@ -207,25 +237,44 @@ function addGalleryItem() {
         }
     }
 
-    const gallery = JSON.parse(localStorage.getItem('galleryItems')) || [];
-    gallery.push({ url, title, type });
-    localStorage.setItem('galleryItems', JSON.stringify(gallery));
-    
-    document.getElementById('galleryUrl').value = '';
-    document.getElementById('galleryTitle').value = '';
-    
-    loadGallery();
+    get(galleryRef).then(snapshot => {
+        const gallery = snapshot.val() || [];
+        gallery.push({ url, title, type });
+        set(galleryRef, gallery).then(() => {
+            document.getElementById('galleryUrl').value = '';
+            document.getElementById('galleryTitle').value = '';
+            loadGallery();
+        });
+    });
 }
 
 function deleteGalleryItem(index) {
-    const gallery = JSON.parse(localStorage.getItem('galleryItems')) || [];
-    gallery.splice(index, 1);
-    localStorage.setItem('galleryItems', JSON.stringify(gallery));
-    loadGallery();
+    get(galleryRef).then(snapshot => {
+        const gallery = snapshot.val() || [];
+        gallery.splice(index, 1);
+        set(galleryRef, gallery).then(() => {
+            loadGallery();
+        });
+    });
 }
 
 // Logout
 function logout() {
     localStorage.removeItem('isAdmin');
     window.location.href = 'index.html';
+}
+
+// Create error message element
+function showError(message) {
+    // Remove any existing error message
+    const existingError = document.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    // Create and add new error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    document.getElementById('loginForm').insertBefore(errorDiv, document.querySelector('.form-actions'));
 }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramkrishna Vidyamandir</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="admin-corner">
+            <a href="admin.html" id="adminLink" class="admin-link">👤 Admin Panel</a>
+        </div>
+        <h1>Ramkrishna Vidyamandir</h1>
+        <p>Under Utsarga Society</p>
+    </header>
+
+    <div class="content" id="mainContent">
+        <!-- Home Section -->
+        <div id="home" class="section">
+            <div id="founder-section">
+                <h2 style="color: #2c5282;">Founder</h2>
+                <p>Dr. Laxman Malakar</p>
+                <img src="https://i.ibb.co/Tx9GSzPx/FB-IMG-1744242273282.jpg" alt="Dr. Laxman Malakar">
+            </div>
+            <div id="notice-box">
+                <h2 style="color: #2c5282; border-bottom: 2px solid #f6ad55;">Latest Notices</h2>
+                <ul id="notices"></ul>
+            </div>
+        </div>
+
+        <!-- Admission Section -->
+        <div id="admission" class="section">
+            <h2>Admission</h2>
+            <p>Click the link below to apply for admission:</p>
+            <a href="https://forms.gle/8BPLbaYL1av4qh1LA" target="_blank" class="btn">Apply Now</a>
+        </div>
+
+        <!-- Gallery Section -->
+        <div id="gallery" class="section">
+            <h2>Gallery</h2>
+            <div class="gallery-filters">
+                <button id="showAll" class="btn">All</button>
+                <button id="showPhotos" class="btn">Photos</button>
+                <button id="showVideos" class="btn">Videos</button>
+            </div>
+            <div class="gallery-container"></div>
+            <div id="noGalleryItems" style="display: none;">No items to display. Please add some photos or videos from the admin panel.</div>
+            <div class="gallery-navigation">
+                <button id="prevGallery" class="btn">Previous</button>
+                <button id="nextGallery" class="btn">Next</button>
+            </div>
+        </div>
+
+        <!-- Student Information Section -->
+        <div id="student-info" class="section">
+            <h2>Student Information</h2>
+            <form id="studentForm">
+                <input type="text" id="studentCode" placeholder="Student Code" required>
+                <input type="text" id="studentName" placeholder="Name" required>
+                <input type="date" id="studentDob" required>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+            <div id="results"></div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="section">
+            <h2>About Us</h2>
+            <p>Ramkrishna Vidyamandir is a prestigious educational institution dedicated to providing quality education and fostering holistic development of students.</p>
+            <p><strong>Established:</strong> January 12, 2012</p>
+            <p><strong>Founder:</strong> Dr. Laxman Malakar, Ex-Headmaster of Belonia Vidyapith H.S School</p>
+            <h3>Contact Information</h3>
+            <ul>
+                <li>Facebook: <a href="https://www.facebook.com/ramkrishnavidyamandir4" target="_blank">Visit Page</a></li>
+                <li>WhatsApp: +91-9862940938</li>
+                <li>Email: info@ramkrishnavidyamandir.org</li>
+                <li>Contact Number: +91-9862940938</li>
+            </ul>
+        </div>
+    </div>
+
+    <nav class="nav-buttons">
+        <button onclick="showSection('home')" class="nav-btn">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button onclick="showSection('admission')" class="nav-btn">
+            <span class="nav-icon">📝</span>
+            <span class="nav-label">Admission</span>
+        </button>
+        <button onclick="showSection('gallery')" class="nav-btn">
+            <span class="nav-icon">📷</span>
+            <span class="nav-label">Gallery</span>
+        </button>
+        <button onclick="showSection('student-info')" class="nav-btn">
+            <span class="nav-icon">👨🎓</span>
+            <span class="nav-label">Student</span>
+        </button>
+        <button onclick="showSection('about')" class="nav-btn">
+            <span class="nav-icon">ℹ️</span>
+            <span class="nav-label">About</span>
+        </button>
+    </nav>
+
+
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" class="modal-content">
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

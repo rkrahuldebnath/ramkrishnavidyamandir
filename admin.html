@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Admin Panel - Ramkrishna Vidyamandir</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel - Ramkrishna Vidyamandir</h1>
+    </header>
+
+    <div class="container">
+        <!-- Login Form -->
+        <div id="login" class="login-form">
+            <h2>Admin Login</h2>
+            <p class="login-info">Please log in to access the admin panel</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Email</label>
+                    <input type="email" id="username" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Login</button>
+                    <a href="index.html" class="btn btn-secondary">Back to Website</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard" style="display: none;">
+            <div class="nav-tabs">
+                <button onclick="showTab('noticesTab')" data-tab="noticesTab" class="active">Manage Notices</button>
+                <button onclick="showTab('studentsTab')" data-tab="studentsTab">Manage Students</button>
+                <button onclick="showTab('galleryTab')" data-tab="galleryTab">Manage Gallery</button>
+                <button onclick="logout()" class="btn">Logout</button>
+            </div>
+
+            <!-- Notices Tab -->
+            <div id="noticesTab" class="tab-content">
+                <h2>Manage Notices</h2>
+                <form onsubmit="event.preventDefault(); addNotice();">
+                    <textarea id="newNotice" placeholder="Enter new notice" required></textarea>
+                    <button type="submit" class="btn">Add Notice</button>
+                </form>
+                <ul id="noticeList"></ul>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="studentsTab" class="tab-content" style="display: none;">
+                <h2>Manage Students</h2>
+                <form onsubmit="event.preventDefault(); addStudent();">
+                    <input type="text" id="studentCode" placeholder="Student Code" required>
+                    <input type="text" id="studentName" placeholder="Name" required>
+                    <input type="date" id="studentDob" required>
+                    <input type="text" id="studentClass" placeholder="Class" required>
+                    <input type="text" id="mothersName" placeholder="Mother's Name" required>
+                    <input type="text" id="fathersName" placeholder="Father's Name" required>
+                    <input type="tel" id="contact" placeholder="Contact Number" required>
+                    <textarea id="address" placeholder="Address" required></textarea>
+                    <button type="submit" class="btn">Add/Update Student</button>
+                </form>
+                <ul id="studentList"></ul>
+            </div>
+
+            <!-- Gallery Tab -->
+            <div id="galleryTab" class="tab-content" style="display: none;">
+                <h2>Manage Gallery</h2>
+                <form onsubmit="event.preventDefault(); addGalleryItem();">
+                    <input type="url" id="galleryUrl" placeholder="Media URL" required>
+                    <input type="text" id="galleryTitle" placeholder="Title" required>
+                    <select id="galleryType" required>
+                        <option value="photo">Photo</option>
+                        <option value="video">Video</option>
+                    </select>
+                    <button type="submit" class="btn">Add to Gallery</button>
+                </form>
+                <ul id="galleryList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
